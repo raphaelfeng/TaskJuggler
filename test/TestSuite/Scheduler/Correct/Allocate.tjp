@@ -10,6 +10,7 @@ macro Fixend [
 shift mowefr "Mo, We, Fr shift" {
   workinghours mon, wed, fri 9:00 - 12:00, 13:00 - 18:00
   workinghours tue, thu, sat off
+  leaves holiday 2007-08-31 + 1w
 }
 shift tuthsa "Tu, Th, Sa shift" {
   workinghours tue, thu, sat 9:00 - 12:00, 13:00 - 18:00

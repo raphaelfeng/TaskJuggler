@@ -1843,6 +1843,12 @@ class TaskJuggler
       takenMandatories = []
       @mandatories.each do |allocation|
         return unless allocation.onShift?(@currentSlotIdx)
+        # If the allocation defines shift leaves, treat them as blocking, too.
+        # This ensures allocation-level leaves prevent booking even if the
+        # resource itself does not carry these leaves.
+        if allocation.shifts && allocation.shifts.onLeave?(@currentSlotIdx)
+          return
+        end
 
         # For mandatory allocations with alternatives at least one of the
         # alternatives must be available.
@@ -1875,6 +1881,8 @@ class TaskJuggler
 
       @allocate.each do |allocation|
         next unless allocation.onShift?(@currentSlotIdx)
+        # Skip this allocation if its shift marks this slot as time off/leave.
+        next if allocation.shifts && allocation.shifts.onLeave?(@currentSlotIdx)
 
         # In case we have a persistent allocation we need to check if there
         # is already a locked resource and use it.
